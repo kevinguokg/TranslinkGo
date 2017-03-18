@@ -8,20 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */; };
-		9D3750D21E7C5BDC007F80B2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750D11E7C5BDC007F80B2 /* ViewController.swift */; };
 		9D3750D51E7C5BDC007F80B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D3750D31E7C5BDC007F80B2 /* Main.storyboard */; };
 		9D3750D71E7C5BDC007F80B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */; };
 		9D3750DA1E7C5BDC007F80B2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D3750D81E7C5BDC007F80B2 /* LaunchScreen.storyboard */; };
+		9D3750E21E7C5CCB007F80B2 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750E11E7C5CCB007F80B2 /* MapViewController.swift */; };
+		9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */; };
+		9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */; };
+		9D3750ED1E7C64DC007F80B2 /* TranslinkLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9D3750CC1E7C5BDC007F80B2 /* TranslinkGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslinkGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9D3750D11E7C5BDC007F80B2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9D3750D41E7C5BDC007F80B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9D3750D91E7C5BDC007F80B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9D3750DB1E7C5BDC007F80B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9D3750E11E7C5CCB007F80B2 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverMapTableView.swift; sourceTree = "<group>"; };
+		9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressSearchBar.swift; sourceTree = "<group>"; };
+		9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslinkLineCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,13 +61,24 @@
 			isa = PBXGroup;
 			children = (
 				9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */,
-				9D3750D11E7C5BDC007F80B2 /* ViewController.swift */,
+				9D3750E11E7C5CCB007F80B2 /* MapViewController.swift */,
+				9D3750E31E7C5D0E007F80B2 /* Views */,
 				9D3750D31E7C5BDC007F80B2 /* Main.storyboard */,
 				9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */,
 				9D3750D81E7C5BDC007F80B2 /* LaunchScreen.storyboard */,
 				9D3750DB1E7C5BDC007F80B2 /* Info.plist */,
 			);
 			path = TranslinkGo;
+			sourceTree = "<group>";
+		};
+		9D3750E31E7C5D0E007F80B2 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */,
+				9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */,
+				9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -137,8 +154,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D3750D21E7C5BDC007F80B2 /* ViewController.swift in Sources */,
 				9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */,
+				9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */,
+				9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */,
+				9D3750ED1E7C64DC007F80B2 /* TranslinkLineCell.swift in Sources */,
+				9D3750E21E7C5CCB007F80B2 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
