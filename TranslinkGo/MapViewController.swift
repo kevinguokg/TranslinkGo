@@ -10,8 +10,14 @@ import Foundation
 import UIKit
 import MapKit
 import CoreLocation
+import SwiftyJSON
 
 class MapViewController: UIViewController {
+    
+    enum MapViewState {
+        case atStopList
+        case atTransitLineList
+    }
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var searchBar: AddressSearchBar!
@@ -20,30 +26,80 @@ class MapViewController: UIViewController {
     lazy var locationManager = CLLocationManager()
     var isMapLocCentered: Bool = false
     var lastContentOffsetY: CGFloat = 0;
+    var currLoc: CLLocation?
+    var pinnedLoc: CLLocation?
+    
+    var stopsList: [TransitStop]?
+    var transitLineList: [TransitLine]?
+    var mapViewState: MapViewState = .atStopList
+    
+    let lat = 49.279667
+    let long = -123.125316
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.edgesForExtendedLayout = []
         
         requestLocation()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateLocation), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(stopUpdatingLocation), name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+        
+        let yTransForm = (self.mapView.frame.height / 2)
+        self.tableView.transform = CGAffineTransform(translationX: 0, y: yTransForm)
+        
+        self.tableView.contentInset = UIEdgeInsets(top: self.mapView.frame.height, left: 0, bottom: 0, right: 0)
+        self.tableView.setContentOffset(CGPoint(x: 0, y:-(self.mapView.frame.height / 2))  , animated: false)
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        self.tableView.contentInset = UIEdgeInsets(top: self.mapView.frame.height, left: 0, bottom: 0, right: 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.tableView.setContentOffset(CGPoint(x: 0, y:-(self.mapView.frame.height / 2))  , animated: true)
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+            self.tableView.transform = CGAffineTransform.identity
+        }, completion: nil)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
+    }
+    
+    func getNearByStopInfo() {
+        if let pinnedLoc = self.pinnedLoc {
+            APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 500, completion: { (response, error) in
+                if let err = error {
+                    print("Error: \(err)")
+                } else if let responseData = response {
+                    self.stopsList = [TransitStop]()
+                    let jsonResponse = JSON(responseData)
+                    
+                    guard let stopArr = jsonResponse.array else {
+                        return
+                    }
+                    
+                    for transitStop in stopArr {
+                        let stop = BusStop(name: transitStop["Name"].stringValue, stopNo: transitStop["StopNo"].intValue, city: transitStop["City"].stringValue, lat: transitStop["Latitude"].doubleValue, long: transitStop["Longitude"].doubleValue)
+                        
+                        stop.distance = transitStop["Distance"].intValue
+                        stop.atStreet = transitStop["AtStreet"].stringValue
+                        stop.onStreet = transitStop["OnStreet"].stringValue
+                        stop.routes = transitStop["Routes"].stringValue
+                        stop.wheelchairAccess = transitStop["WheelchairAccess"].intValue
+                        
+                        self.stopsList?.append(stop)
+                    }
+                    
+                    self.tableView.reloadData()
+                    self.addAnnotationsForStops()
+                    
+                }
+            })
+        }
+        
     }
     
     func requestLocation() {
@@ -57,7 +113,6 @@ class MapViewController: UIViewController {
         // Note: requestLocation may timeout and produce an error if authorization has not yet been granted by the user
     }
     
-
     
     func updateLocation() {
         locationManager.startUpdatingLocation()
@@ -76,18 +131,34 @@ class MapViewController: UIViewController {
             return
         }
         
-        let center = CLLocationCoordinate2D(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude)
-        let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+        //let center = CLLocationCoordinate2D(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude)
+        
+        let center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
         mapView.region = MKCoordinateRegion(center: center, span: span)
         isMapLocCentered = true
     }
     
+    func addAnnotationsForStops() {
+        guard let stopsList = self.stopsList else {return}
+        
+        for stop in stopsList  {
+            let busStop = stop as! BusStop
+//            let annotation = MKPointAnnotation()
+//            annotation.coordinate = CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude)
+//            annotation.title = "\(busStop.stopNo)"
+//            annotation.subtitle = busStop.name
+            
+            let annotation = BusStopLocAnnotation(title: "\(busStop.stopNo)", coordinate: CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude), info: busStop.name)
+            self.mapView.addAnnotation(annotation)
+        }
+    }
 }
 
 extension MapViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return self.stopsList?.count ?? 0
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -97,7 +168,72 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "translinkLineCell", for: indexPath) as? TranslinkLineCell
         
+        let busStop = self.stopsList?[indexPath.row] as! BusStop
+        
+        cell?.textLabel?.text = busStop.name
+        cell?.detailTextLabel?.text = "\(busStop.stopNo)"
+        
         return cell!
+    }
+}
+
+extension MapViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annoId = "LocationAnnotation"
+        
+        if annotation is BusStopLocAnnotation {
+            var annoView = mapView.dequeueReusableAnnotationView(withIdentifier: annoId)
+            
+            if annoView == nil {
+                annoView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: annoId)
+                annoView?.canShowCallout = true
+                annoView?.rightCalloutAccessoryView = UIButton(type: UIButtonType.detailDisclosure)
+            }
+            
+            return annoView
+        }
+        return nil
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        print("calloutAccessoryControlTapped")
+        
+        let annotation = view.annotation as! BusStopLocAnnotation
+        guard let title = annotation.title else {return}
+        
+        APIManager.sharedInstance.queryNextBusEstimate(stopNumber: Int(title)!, numOfServices: 3, minuteMeters: 60, completion: { (response, error) in
+            if let err = error {
+                print("Error: \(err)")
+            } else if let responseData = response {
+                self.transitLineList = [TransitLine]()
+                let jsonResponse = JSON(responseData)
+                
+                guard let routesArr = jsonResponse.array else {
+                    return
+                }
+                
+                for transitLineItem in routesArr {
+                    let transitLine = TransitLine(routeNo: transitLineItem["RouteNo"].stringValue, routeName: transitLineItem["RouteName"].stringValue, direction: transitLineItem["Direction"].stringValue)
+                    
+                    if let scheduleArr = transitLineItem["Schedules"].array {
+                        for scheduleItem in scheduleArr {
+                            let schedule = TransitSchedule(pattern: scheduleItem["Pattern"].stringValue, destination: scheduleItem["Destination"].stringValue)
+                            
+                        }
+                    }
+                    
+                    
+                }
+                
+            }
+        })
+        
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("didSelect MKAnnotationView")
     }
 }
 
@@ -107,10 +243,11 @@ extension MapViewController: CLLocationManagerDelegate {
         
         // gets the latest loc
         if let newLoc = locations.last {
-            _ = newLoc.coordinate.latitude
-            _ = newLoc.coordinate.longitude
+            self.currLoc = newLoc
+            self.pinnedLoc = newLoc
             
             updateMapCenter(loc: newLoc)
+            getNearByStopInfo()
         }
         
         stopUpdatingLocation()
@@ -127,11 +264,9 @@ extension MapViewController: UISearchBarDelegate {
         
         invalidateMapCenter()
         updateLocation()
-        
-        
+
     }
 }
-
 
 extension MapViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {

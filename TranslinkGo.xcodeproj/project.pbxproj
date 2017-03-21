@@ -15,9 +15,18 @@
 		9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */; };
 		9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */; };
 		9D3750ED1E7C64DC007F80B2 /* TranslinkLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */; };
+		9D38573F1E8041C7000C4C6A /* TransitLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38573E1E8041C7000C4C6A /* TransitLine.swift */; };
+		9D3857411E805941000C4C6A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857401E805941000C4C6A /* Constants.swift */; };
+		9D3857431E805998000C4C6A /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857421E805998000C4C6A /* APIManager.swift */; };
+		9D3857451E8065A2000C4C6A /* BusStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857441E8065A2000C4C6A /* BusStop.swift */; };
+		9D3857471E8065C2000C4C6A /* TransitStop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857461E8065C2000C4C6A /* TransitStop.swift */; };
+		9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */; };
+		9D38574B1E80AC82000C4C6A /* TransitSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */; };
+		B9FB91282A7CF8614F519844 /* Pods_TranslinkGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TranslinkGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3750CC1E7C5BDC007F80B2 /* TranslinkGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslinkGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D3750D41E7C5BDC007F80B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -28,6 +37,15 @@
 		9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoverMapTableView.swift; sourceTree = "<group>"; };
 		9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressSearchBar.swift; sourceTree = "<group>"; };
 		9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslinkLineCell.swift; sourceTree = "<group>"; };
+		9D38573E1E8041C7000C4C6A /* TransitLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitLine.swift; sourceTree = "<group>"; };
+		9D3857401E805941000C4C6A /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		9D3857421E805998000C4C6A /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
+		9D3857441E8065A2000C4C6A /* BusStop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStop.swift; sourceTree = "<group>"; };
+		9D3857461E8065C2000C4C6A /* TransitStop.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitStop.swift; sourceTree = "<group>"; };
+		9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopLocAnnotation.swift; sourceTree = "<group>"; };
+		9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitSchedule.swift; sourceTree = "<group>"; };
+		AE22F9FC5321DC0510DF5153 /* Pods-TranslinkGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslinkGo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo.debug.xcconfig"; sourceTree = "<group>"; };
+		D29186E72FFE92D9E61EE27F /* Pods-TranslinkGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslinkGo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,17 +53,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9FB91282A7CF8614F519844 /* Pods_TranslinkGo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E3EB5A53867CD7F648929A2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AE22F9FC5321DC0510DF5153 /* Pods-TranslinkGo.debug.xcconfig */,
+				D29186E72FFE92D9E61EE27F /* Pods-TranslinkGo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9D3750C31E7C5BDC007F80B2 = {
 			isa = PBXGroup;
 			children = (
 				9D3750CE1E7C5BDC007F80B2 /* TranslinkGo */,
 				9D3750CD1E7C5BDC007F80B2 /* Products */,
+				0E3EB5A53867CD7F648929A2 /* Pods */,
+				CC5FCB1E8A251C75B199DB1C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,8 +90,11 @@
 		9D3750CE1E7C5BDC007F80B2 /* TranslinkGo */ = {
 			isa = PBXGroup;
 			children = (
+				9D3857421E805998000C4C6A /* APIManager.swift */,
+				9D3857401E805941000C4C6A /* Constants.swift */,
 				9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */,
 				9D3750E11E7C5CCB007F80B2 /* MapViewController.swift */,
+				9D38573D1E8041B1000C4C6A /* Models */,
 				9D3750E31E7C5D0E007F80B2 /* Views */,
 				9D3750D31E7C5BDC007F80B2 /* Main.storyboard */,
 				9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */,
@@ -77,8 +110,28 @@
 				9D3750E61E7C5FBF007F80B2 /* CoverMapTableView.swift */,
 				9D3750E81E7C600C007F80B2 /* AddressSearchBar.swift */,
 				9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */,
+				9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		9D38573D1E8041B1000C4C6A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9D38573E1E8041C7000C4C6A /* TransitLine.swift */,
+				9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */,
+				9D3857441E8065A2000C4C6A /* BusStop.swift */,
+				9D3857461E8065C2000C4C6A /* TransitStop.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		CC5FCB1E8A251C75B199DB1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -88,9 +141,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D3750DE1E7C5BDC007F80B2 /* Build configuration list for PBXNativeTarget "TranslinkGo" */;
 			buildPhases = (
+				852B044794176A3AFF5DB43E /* [CP] Check Pods Manifest.lock */,
 				9D3750C81E7C5BDC007F80B2 /* Sources */,
 				9D3750C91E7C5BDC007F80B2 /* Frameworks */,
 				9D3750CA1E7C5BDC007F80B2 /* Resources */,
+				C0AA94791676EFF248170157 /* [CP] Embed Pods Frameworks */,
+				63232B1E096E9F4FB19D7C38 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -149,14 +205,69 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		63232B1E096E9F4FB19D7C38 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		852B044794176A3AFF5DB43E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		C0AA94791676EFF248170157 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9D3750C81E7C5BDC007F80B2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D3857431E805998000C4C6A /* APIManager.swift in Sources */,
 				9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */,
 				9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */,
 				9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */,
+				9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */,
+				9D38573F1E8041C7000C4C6A /* TransitLine.swift in Sources */,
+				9D38574B1E80AC82000C4C6A /* TransitSchedule.swift in Sources */,
+				9D3857411E805941000C4C6A /* Constants.swift in Sources */,
+				9D3857451E8065A2000C4C6A /* BusStop.swift in Sources */,
+				9D3857471E8065C2000C4C6A /* TransitStop.swift in Sources */,
 				9D3750ED1E7C64DC007F80B2 /* TranslinkLineCell.swift in Sources */,
 				9D3750E21E7C5CCB007F80B2 /* MapViewController.swift in Sources */,
 			);
@@ -277,10 +388,12 @@
 		};
 		9D3750DF1E7C5BDC007F80B2 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AE22F9FC5321DC0510DF5153 /* Pods-TranslinkGo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UQM34R2Q7G;
 				INFOPLIST_FILE = TranslinkGo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kguo.TranslinkGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -290,10 +403,12 @@
 		};
 		9D3750E01E7C5BDC007F80B2 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D29186E72FFE92D9E61EE27F /* Pods-TranslinkGo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = UQM34R2Q7G;
 				INFOPLIST_FILE = TranslinkGo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.kguo.TranslinkGo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -320,6 +435,7 @@
 				9D3750E01E7C5BDC007F80B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -36,5 +36,11 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>App access to user location information</string>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <!--Include to allow all connections (DANGER)-->
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
 </dict>
 </plist>
