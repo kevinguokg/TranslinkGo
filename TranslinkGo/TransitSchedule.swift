@@ -19,7 +19,7 @@ class TransitSchedule {
     var isStopCancelled: Bool?
     var isTripAdded: Bool?
     var isStopAdded: Bool?
-    var lastUpdate: Date
+    var lastUpdate: Date?
     
     init(pattern: String, destination: String) {
         self.pattern = pattern

@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -34,11 +33,29 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="ybM-HD-yHn"/>
                                 </connections>
                             </mapView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="q6o-6a-mZF" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CU7-Og-myx" userLabel="Transit Estimate TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="translinkLineCell" id="xMf-JU-ITn" customClass="TranslinkLineCell" customModule="TranslinkGo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="transitEstimateCell" id="mSa-BF-4XQ" customClass="TransitEstimateCell" customModule="TranslinkGo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mSa-BF-4XQ" id="DAC-4H-JFP">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="LSu-bz-sWr"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="zCA-m4-yvj"/>
+                                </connections>
+                            </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="q6o-6a-mZF" userLabel="Transit Stop Info TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="translinkLineCell" id="xMf-JU-ITn" customClass="TranslinkLineCell" customModule="TranslinkGo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xMf-JU-ITn" id="6Nm-d7-FEB">
@@ -55,13 +72,17 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="CU7-Og-myx" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="7Hc-Zk-gEK"/>
                             <constraint firstItem="kvJ-N2-P5j" firstAttribute="top" secondItem="xK1-uf-KVi" secondAttribute="bottom" id="EQK-BE-hni"/>
                             <constraint firstAttribute="trailing" secondItem="q6o-6a-mZF" secondAttribute="trailing" id="FZZ-cM-svS"/>
                             <constraint firstItem="q6o-6a-mZF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="Jet-Na-2Q3"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="kvJ-N2-P5j" secondAttribute="bottom" id="OBs-uq-s31"/>
+                            <constraint firstItem="CU7-Og-myx" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="TPx-yv-E8L"/>
                             <constraint firstItem="xK1-uf-KVi" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Tfb-EF-uA4"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="CU7-Og-myx" secondAttribute="bottom" id="Uog-h3-sfb"/>
                             <constraint firstItem="xK1-uf-KVi" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="20" id="Wc0-Lc-Yda"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="q6o-6a-mZF" secondAttribute="bottom" id="d0R-xH-Qc3"/>
+                            <constraint firstAttribute="trailing" secondItem="CU7-Og-myx" secondAttribute="trailing" id="dez-46-d3p"/>
                             <constraint firstAttribute="trailing" secondItem="kvJ-N2-P5j" secondAttribute="trailing" id="jCz-vZ-8cG"/>
                             <constraint firstAttribute="trailing" secondItem="xK1-uf-KVi" secondAttribute="trailing" id="rKZ-kR-wyd"/>
                             <constraint firstItem="kvJ-N2-P5j" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="tpK-1c-iS6"/>
@@ -72,7 +93,8 @@
                     <connections>
                         <outlet property="mapView" destination="kvJ-N2-P5j" id="yV9-o7-4bW"/>
                         <outlet property="searchBar" destination="xK1-uf-KVi" id="rY8-g0-YP6"/>
-                        <outlet property="tableView" destination="q6o-6a-mZF" id="3Xh-o9-B7h"/>
+                        <outlet property="transitEstimateTableView" destination="CU7-Og-myx" id="eHC-Yz-GEL"/>
+                        <outlet property="transitStopTableView" destination="q6o-6a-mZF" id="XbD-l7-6gI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

@@ -13,7 +13,7 @@ class APIManager {
     
     static let sharedInstance = APIManager()
     
-    private static let retryCount = 10
+    private static let retryCount = 0
     private static let stopInfoEndPoint = "http://api.translink.ca/rttiapi/v1/stops"
     private static let nextBusEstiamteEndPoint = stopInfoEndPoint
     
