@@ -37,6 +37,9 @@ class MapViewController: UIViewController {
     let lat = 49.279667
     let long = -123.125316
     
+    var expandedTransitStopRows = Set<Int>()
+    var expandedTransitLineRows = Set<Int>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -228,10 +231,15 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             
             let busStop = self.stopsList?[indexPath.row] as! BusStop
             
-            cell?.textLabel?.text = busStop.name
-            cell?.detailTextLabel?.text = "\(busStop.stopNo)"
+            cell?.stopNoLabel.text = "\(busStop.stopNo)"
+            cell?.stopLocLabel.text = "\(busStop.onStreet!)/\(busStop.atStreet!)"
+            cell?.transitLineLabel.text = busStop.routes! == "" ? "Routes info not available" : busStop.routes!
+            cell?.distanceLabel.text = "\(busStop.distance!)m"
+            cell?.wheelChairImageLabel.isHidden = busStop.wheelchairAccess! == 0
+            cell?.isExpanded = self.expandedTransitStopRows.contains(indexPath.row)
             
-                return cell!
+            return cell!
+            
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "transitEstimateCell", for: indexPath) as? TransitEstimateCell
             
@@ -242,6 +250,49 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             
             return cell!
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if tableView == transitStopTableView {
+            guard let cell = tableView.cellForRow(at: indexPath) as? TranslinkLineCell else { return }
+            
+            switch cell.isExpanded {
+            case true:
+                self.expandedTransitStopRows.remove(indexPath.row)
+                break
+            case false:
+                self.expandedTransitStopRows.insert(indexPath.row)
+                break
+            }
+            
+            cell.isExpanded = !cell.isExpanded
+            
+            self.transitStopTableView.beginUpdates()
+            self.transitStopTableView.endUpdates()
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        if tableView == transitStopTableView {
+            guard let cell = tableView.cellForRow(at: indexPath) as? TranslinkLineCell else { return }
+            self.expandedTransitStopRows.remove(indexPath.row)
+            cell.isExpanded = false
+            self.transitStopTableView.beginUpdates()
+            self.transitStopTableView.endUpdates()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == transitStopTableView {
+            if self.expandedTransitStopRows.contains(indexPath.row) {
+                return 120.0
+            } else {
+                return 90.0
+            }
+        }
+        
+        return 90.0
     }
 }
 
