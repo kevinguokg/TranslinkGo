@@ -33,17 +33,134 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="ybM-HD-yHn"/>
                                 </connections>
                             </mapView>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CU7-Og-myx" userLabel="Transit Estimate TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="CU7-Og-myx" userLabel="Transit Estimate TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="transitEstimateCell" id="mSa-BF-4XQ" customClass="TransitEstimateCell" customModule="TranslinkGo" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="transitEstimateCell" rowHeight="120" id="mSa-BF-4XQ" customClass="TransitEstimateCell" customModule="TranslinkGo" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mSa-BF-4XQ" id="DAC-4H-JFP">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Xjm-Jk-r4d">
+                                                    <rect key="frame" x="20" y="0.0" width="335" height="119"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K6O-G8-42h" userLabel="Main View">
+                                                            <rect key="frame" x="0.0" y="0.0" width="335" height="89"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="8EP-v6-1m0">
+                                                                    <rect key="frame" x="0.0" y="3" width="175.5" height="83"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qb8-Yf-D5J" userLabel="Transit Line Label">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="38.5" height="41"/>
+                                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="34"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="UBC" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ccq-sg-yyq" userLabel="Destination Label">
+                                                                            <rect key="frame" x="0.0" y="41" width="37.5" height="21.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="18"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Granville St / Nelson St" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFE-fN-tiU" userLabel="Location Label">
+                                                                            <rect key="frame" x="0.0" y="62.5" width="175.5" height="20.5"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="OIE-3k-a42">
+                                                                    <rect key="frame" x="296.5" y="24" width="38.5" height="41"/>
+                                                                    <subviews>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="7" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZqG-Zf-ekj" userLabel="Location Label">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="38.5" height="29"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="minutes" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7X9-J1-bXe" userLabel="Location Label">
+                                                                            <rect key="frame" x="0.0" y="29" width="38.5" height="12"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                            <constraints>
+                                                                <constraint firstItem="OIE-3k-a42" firstAttribute="centerY" secondItem="K6O-G8-42h" secondAttribute="centerY" id="JZA-7W-LU3"/>
+                                                                <constraint firstItem="8EP-v6-1m0" firstAttribute="centerY" secondItem="K6O-G8-42h" secondAttribute="centerY" id="V3U-qZ-bwL"/>
+                                                                <constraint firstAttribute="trailing" secondItem="OIE-3k-a42" secondAttribute="trailing" id="YkW-uX-Hgj"/>
+                                                                <constraint firstItem="8EP-v6-1m0" firstAttribute="leading" secondItem="K6O-G8-42h" secondAttribute="leading" id="rJN-HQ-J2n"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bSf-Xl-cer" userLabel="Bottom View">
+                                                            <rect key="frame" x="0.0" y="89" width="335" height="30"/>
+                                                            <subviews>
+                                                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="5Lo-5r-KGi">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
+                                                                    <subviews>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nmj-yQ-zUF">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="72" height="30"/>
+                                                                            <state key="normal" title="Locate">
+                                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            </state>
+                                                                        </button>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OuU-po-YiH">
+                                                                            <rect key="frame" x="72" y="0.0" width="107" height="30"/>
+                                                                            <state key="normal" title="Bookmark">
+                                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            </state>
+                                                                        </button>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ERh-9H-wWn">
+                                                                            <rect key="frame" x="179" y="0.0" width="110" height="30"/>
+                                                                            <state key="normal" title="Schedules">
+                                                                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                            </state>
+                                                                        </button>
+                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNl-Wp-HSJ">
+                                                                            <rect key="frame" x="289" y="0.0" width="46" height="30"/>
+                                                                            <state key="normal" title="Go!">
+                                                                                <color key="titleColor" red="0.20703584520000001" green="0.70817872959999995" blue="0.31356426780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                            </state>
+                                                                        </button>
+                                                                    </subviews>
+                                                                </stackView>
+                                                            </subviews>
+                                                            <color key="backgroundColor" red="0.15628222089395069" green="0.21299770528442263" blue="0.40612496266954323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="5Lo-5r-KGi" secondAttribute="trailing" id="1VU-zQ-ZXL"/>
+                                                                <constraint firstItem="5Lo-5r-KGi" firstAttribute="leading" secondItem="bSf-Xl-cer" secondAttribute="leading" id="8A9-3f-FFh"/>
+                                                                <constraint firstAttribute="bottom" secondItem="5Lo-5r-KGi" secondAttribute="bottom" id="BWv-Nw-oaR"/>
+                                                                <constraint firstItem="5Lo-5r-KGi" firstAttribute="top" secondItem="bSf-Xl-cer" secondAttribute="top" id="me7-Ke-loi"/>
+                                                                <constraint firstAttribute="height" constant="30" id="wq3-5k-asx"/>
+                                                            </constraints>
+                                                        </view>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <color key="backgroundColor" red="0.026425920429999999" green="0.37182748319999998" blue="0.65430730579999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Xjm-Jk-r4d" secondAttribute="bottom" id="52z-Q6-KEG"/>
+                                                <constraint firstItem="Xjm-Jk-r4d" firstAttribute="leading" secondItem="DAC-4H-JFP" secondAttribute="leading" constant="20" symbolic="YES" id="5aP-ux-jli"/>
+                                                <constraint firstAttribute="trailing" secondItem="Xjm-Jk-r4d" secondAttribute="trailing" constant="20" symbolic="YES" id="7Wj-qi-UgD"/>
+                                                <constraint firstItem="Xjm-Jk-r4d" firstAttribute="top" secondItem="DAC-4H-JFP" secondAttribute="top" id="MjH-qs-FEH"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="bottomView" destination="bSf-Xl-cer" id="B59-pK-ywG"/>
+                                            <outlet property="bottomViewHeightConstraint" destination="wq3-5k-asx" id="UTv-y5-P3M"/>
+                                            <outlet property="recentScheduleLabel" destination="ZqG-Zf-ekj" id="ScV-Vm-509"/>
+                                            <outlet property="recentScheduleUnitLabel" destination="7X9-J1-bXe" id="SUt-um-dw6"/>
+                                            <outlet property="transitDestinationLabel" destination="Ccq-sg-yyq" id="vk0-mb-TbO"/>
+                                            <outlet property="transitLineNoLabel" destination="qb8-Yf-D5J" id="Njh-9i-DUS"/>
+                                            <outlet property="transitLocationLabel" destination="MFE-fN-tiU" id="UN8-QP-fGW"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -51,15 +168,15 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="zCA-m4-yvj"/>
                                 </connections>
                             </tableView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="q6o-6a-mZF" userLabel="Transit Stop Info TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="120" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="q6o-6a-mZF" userLabel="Transit Stop Info TableView" customClass="CoverMapTableView" customModule="TranslinkGo" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="gray" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="translinkLineCell" rowHeight="120" id="xMf-JU-ITn" customClass="TranslinkLineCell" customModule="TranslinkGo" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="translinkLineCell" rowHeight="120" id="xMf-JU-ITn" customClass="TranslinkLineCell" customModule="TranslinkGo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="120"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xMf-JU-ITn" id="6Nm-d7-FEB">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="119"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1Lz-X2-JGu" userLabel="Main View">
@@ -119,28 +236,28 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="xdJ-aw-Okh">
                                                             <rect key="frame" x="0.0" y="0.0" width="335" height="30"/>
                                                             <subviews>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDO-CC-w1P">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cDO-CC-w1P" userLabel="Bookmark">
                                                                     <rect key="frame" x="0.0" y="0.0" width="111.5" height="30"/>
-                                                                    <state key="normal" title="Fav">
+                                                                    <state key="normal" title="Bookmark">
                                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ldv-so-Ulq">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pHS-ee-PXd">
                                                                     <rect key="frame" x="111.5" y="0.0" width="112" height="30"/>
-                                                                    <state key="normal" title="Transit Detail">
+                                                                    <state key="normal" title="Locate">
                                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                 </button>
-                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RRH-6h-XdS">
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RRH-6h-XdS" userLabel="Transit Detail">
                                                                     <rect key="frame" x="223.5" y="0.0" width="111.5" height="30"/>
-                                                                    <state key="normal" title="Go">
+                                                                    <state key="normal" title="Transit Detail">
                                                                         <color key="titleColor" red="0.20703584520000001" green="0.70817872959999995" blue="0.31356426780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     </state>
                                                                 </button>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
-                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    <color key="backgroundColor" red="0.15628222089999999" green="0.21299770530000001" blue="0.40612496269999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="7gJ-9h-U9Z"/>
                                                         <constraint firstAttribute="bottom" secondItem="xdJ-aw-Okh" secondAttribute="bottom" id="Ne4-gd-Gi2"/>
@@ -161,11 +278,14 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bookmarkBtn" destination="cDO-CC-w1P" id="krV-2U-vQD"/>
                                             <outlet property="bottomView" destination="5dh-Hf-c40" id="bqN-zL-3gA"/>
                                             <outlet property="bottomViewContraint" destination="7gJ-9h-U9Z" id="j5W-K4-3Tn"/>
                                             <outlet property="distanceLabel" destination="ANc-AK-bBy" id="3f6-Ea-Gwf"/>
+                                            <outlet property="locateBtn" destination="pHS-ee-PXd" id="DNo-J4-klB"/>
                                             <outlet property="stopLocLabel" destination="cDl-qg-Qoc" id="qzh-0e-kZ4"/>
                                             <outlet property="stopNoLabel" destination="CKP-Rh-WG1" id="EX4-NW-cyW"/>
+                                            <outlet property="transitDetailBtn" destination="RRH-6h-XdS" id="CGe-aB-0OR"/>
                                             <outlet property="transitLineLabel" destination="SD7-ST-FFD" id="Ybj-ef-oZ3"/>
                                             <outlet property="wheelChairImageLabel" destination="zMh-Pt-EFg" id="tS3-9K-2gQ"/>
                                         </connections>

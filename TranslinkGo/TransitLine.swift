@@ -10,13 +10,13 @@ import Foundation
 
 class TransitLine {
     var routeNo: String
-    var routename: String
+    var routeName: String
     var direction: String
     var schedules: [TransitSchedule]?
     
     init(routeNo: String, routeName: String, direction: String) {
         self.routeNo = routeNo
-        self.routename = routeName
+        self.routeName = routeName
         self.direction = direction
     }
     

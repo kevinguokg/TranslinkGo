@@ -21,6 +21,10 @@ class TranslinkLineCell: UITableViewCell {
     
     @IBOutlet weak var bottomViewContraint: NSLayoutConstraint!
     
+    @IBOutlet weak var bookmarkBtn: UIButton!
+    @IBOutlet weak var locateBtn: UIButton!
+    @IBOutlet weak var transitDetailBtn: UIButton!
+    
     var isExpanded: Bool = false {
         didSet {
             if !isExpanded {

@@ -40,6 +40,8 @@ class MapViewController: UIViewController {
     var expandedTransitStopRows = Set<Int>()
     var expandedTransitLineRows = Set<Int>()
     
+    var transitLineRefreshTimer: Timer = Timer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,6 +59,11 @@ class MapViewController: UIViewController {
         self.transitEstimateTableView.transform = CGAffineTransform(translationX: 0, y: yTransForm)
         self.transitEstimateTableView.contentInset = UIEdgeInsets(top: self.mapView.frame.height, left: 0, bottom: 0, right: 0)
         self.transitEstimateTableView.setContentOffset(CGPoint(x: 0, y:-(self.mapView.frame.height / 2))  , animated: false)
+
+        // not working..
+//        transitLineRefreshTimer = Timer(fireAt: Date() , interval: 10, target: self, selector: #selector(refreshTransiLineStatus), userInfo: nil, repeats: true)
+        
+        transitLineRefreshTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(refreshTransiLineStatus), userInfo: nil, repeats: true)
     }
     
     override func viewDidLayoutSubviews() {
@@ -76,11 +83,20 @@ class MapViewController: UIViewController {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationWillResignActive, object: nil)
     }
     
+    // MARK: Timer Calls
+    
+    func refreshTransiLineStatus() {
+        guard let index = self.expandedTransitStopRows.first else {return}
+        let busStop = self.stopsList?[index] as! BusStop
+        getNextbusInfo(stopNo: busStop.stopNo)
+    }
     
     // MARK: API Calls
     func getNearByStopInfo() {
         if let pinnedLoc = self.pinnedLoc {
-            APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 500, completion: { (response, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 300, completion: { (response, error) in
+                UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 if let err = error {
                     print("Error: \(err)")
                 } else if let responseData = response {
@@ -112,8 +128,11 @@ class MapViewController: UIViewController {
         
     }
     
-    func getNextbusInfo(stopNo: Int) {
+    func getNextbusInfo(stopNo: Int?) {
+        guard let stopNo = stopNo else { return }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
         APIManager.sharedInstance.queryNextBusEstimate(stopNumber: stopNo, numOfServices: 3, minuteMeters: 60, completion: { (response, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
             if let err = error {
                 print("Error: \(err)")
             } else if let responseData = response {
@@ -131,25 +150,33 @@ class MapViewController: UIViewController {
                         transitLine.schedules = [TransitSchedule]()
                         for scheduleItem in scheduleArr {
                             let schedule = TransitSchedule(pattern: scheduleItem["Pattern"].stringValue, destination: scheduleItem["Destination"].stringValue)
-                            transitLine.schedules?.append(schedule)
-                            
+                            schedule.expCountDown = scheduleItem["ExpectedCountdown"].intValue
                             // TODO: More fields
+                            
+                            transitLine.schedules?.append(schedule)
                         }
                     }
                     
                     self.transitLineList?.append(transitLine)
                     self.transitEstimateTableView.reloadData()
+                    if let lastVisibleIndexPath = self.transitEstimateTableView.indexPathsForVisibleRows?[(self.transitEstimateTableView.indexPathsForVisibleRows?.count)! - 1] {
+                        self.transitEstimateTableView.scrollToRow(at: lastVisibleIndexPath, at: UITableViewScrollPosition.top, animated: true)
+                    }
                     
-                    // switch states
-                    self.mapViewState = .atTransitLineList
                     
-                    // bring up tableview
+                    if self.mapViewState == .atStopList {
+                        // switch states
+                        self.mapViewState = .atTransitLineList
+                        
+                        // bring up tableview
+                        
+                        self.transitEstimateTableView.isHidden = false
+                        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                            self.transitEstimateTableView.transform = CGAffineTransform.identity
+                            self.transitStopTableView.transform = CGAffineTransform(translationX: 0, y: self.mapView.frame.height + self.transitStopTableView.contentOffset.y)
+                        }, completion: nil)
+                    }
                     
-                    self.transitEstimateTableView.isHidden = false
-                    UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
-                        self.transitEstimateTableView.transform = CGAffineTransform.identity
-                        self.transitStopTableView.transform = CGAffineTransform(translationX: 0, y: self.mapView.frame.height)
-                    }, completion: nil)
                 }
                 
             }
@@ -185,25 +212,33 @@ class MapViewController: UIViewController {
             return
         }
         
-        //let center = CLLocationCoordinate2D(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude)
+        var center = CLLocationCoordinate2D(latitude: loc.coordinate.latitude, longitude: loc.coordinate.longitude)
         
-        let center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        #if (arch(i386) || arch(x86_64)) && os(iOS)
+            center = CLLocationCoordinate2D(latitude: lat, longitude: long)
+        #endif
+        
         let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
         mapView.region = MKCoordinateRegion(center: center, span: span)
         isMapLocCentered = true
     }
     
+    func clearAllMapAnnotations() {
+        self.mapView.removeAnnotations(self.mapView.annotations)
+    }
+    
     func addAnnotationsForStops() {
         guard let stopsList = self.stopsList else {return}
+        clearAllMapAnnotations()
         
         for stop in stopsList  {
             let busStop = stop as! BusStop
-//            let annotation = MKPointAnnotation()
-//            annotation.coordinate = CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude)
-//            annotation.title = "\(busStop.stopNo)"
-//            annotation.subtitle = busStop.name
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude)
+            annotation.title = "\(busStop.stopNo)"
+            annotation.subtitle = busStop.name
             
-            let annotation = BusStopLocAnnotation(title: "\(busStop.stopNo)", coordinate: CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude), info: busStop.name)
+//            let annotation = BusStopLocAnnotation(title: "\(busStop.stopNo)", coordinate: CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude), info: busStop.name)
             self.mapView.addAnnotation(annotation)
         }
     }
@@ -232,11 +267,14 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             let busStop = self.stopsList?[indexPath.row] as! BusStop
             
             cell?.stopNoLabel.text = "\(busStop.stopNo)"
-            cell?.stopLocLabel.text = "\(busStop.onStreet!)/\(busStop.atStreet!)"
-            cell?.transitLineLabel.text = busStop.routes! == "" ? "Routes info not available" : busStop.routes!
+            cell?.stopLocLabel.text = "\(busStop.onStreet!.capitalized)/\(busStop.atStreet!.capitalized)"
+            cell?.transitLineLabel.text = busStop.routes! == "" ? "Routes info not available" : busStop.routes!.capitalized
             cell?.distanceLabel.text = "\(busStop.distance!)m"
             cell?.wheelChairImageLabel.isHidden = busStop.wheelchairAccess! == 0
             cell?.isExpanded = self.expandedTransitStopRows.contains(indexPath.row)
+            
+            cell?.transitDetailBtn.tag = indexPath.row
+            cell?.transitDetailBtn.addTarget(self, action: #selector(transitDetailBtnTapped(sender:)), for: UIControlEvents.touchUpInside)
             
             return cell!
             
@@ -245,8 +283,25 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             
             let transitLine = self.transitLineList?[indexPath.row]
 
-            cell?.textLabel?.text = transitLine?.routeNo
-            cell?.detailTextLabel?.text = transitLine?.routename
+            cell?.transitLineNoLabel.text = transitLine?.routeNo
+            
+            if let schedules = transitLine?.schedules {
+                cell?.transitDestinationLabel.text = schedules[0].destination.capitalized
+                cell?.recentScheduleLabel.text = "\(schedules[0].expCountDown!)"
+            } else {
+                cell?.transitDestinationLabel.text = transitLine?.routeName.capitalized
+                cell?.recentScheduleLabel.text = "N/A"
+            }
+            
+            if let index = self.expandedTransitStopRows.first {
+                cell?.transitLocationLabel.text = self.stopsList?[index].name.capitalized
+            } else {
+                // TODO: look for item iteratively...
+                
+            }
+            
+            
+            cell?.isExpanded = self.expandedTransitLineRows.contains(indexPath.row)
             
             return cell!
         }
@@ -270,6 +325,22 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             self.transitStopTableView.beginUpdates()
             self.transitStopTableView.endUpdates()
             
+        } else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? TransitEstimateCell else { return }
+            
+            switch cell.isExpanded {
+            case true:
+                self.expandedTransitLineRows.remove(indexPath.row)
+                break
+            case false:
+                self.expandedTransitLineRows.insert(indexPath.row)
+                break
+            }
+            
+            cell.isExpanded = !cell.isExpanded
+            
+            self.transitEstimateTableView.beginUpdates()
+            self.transitEstimateTableView.endUpdates()
         }
     }
     
@@ -280,6 +351,12 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             cell.isExpanded = false
             self.transitStopTableView.beginUpdates()
             self.transitStopTableView.endUpdates()
+        } else {
+            guard let cell = tableView.cellForRow(at: indexPath) as? TransitEstimateCell else { return }
+            self.expandedTransitLineRows.remove(indexPath.row)
+            cell.isExpanded = false
+            self.transitEstimateTableView.beginUpdates()
+            self.transitEstimateTableView.endUpdates()
         }
     }
     
@@ -290,9 +367,20 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             } else {
                 return 90.0
             }
+        } else {
+            if self.expandedTransitLineRows.contains(indexPath.row) {
+                return 120.0
+            } else {
+                return 90.0
+            }
         }
-        
-        return 90.0
+    }
+    
+    func transitDetailBtnTapped(sender: UIButton) {
+        let row = sender.tag
+        if let busStop = self.stopsList?[row] as? BusStop {
+            self.getNextbusInfo(stopNo: busStop.stopNo)
+        }
     }
 }
 
