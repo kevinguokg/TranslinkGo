@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9D05753C1E84A70400152D1B /* advanced_led_board-7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D05753B1E84A70400152D1B /* advanced_led_board-7.ttf */; };
 		9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */; };
 		9D3750D51E7C5BDC007F80B2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D3750D31E7C5BDC007F80B2 /* Main.storyboard */; };
 		9D3750D71E7C5BDC007F80B2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */; };
@@ -23,11 +24,14 @@
 		9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */; };
 		9D38574B1E80AC82000C4C6A /* TransitSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */; };
 		9D38574D1E819B1D000C4C6A /* TransitEstimateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38574C1E819B1D000C4C6A /* TransitEstimateCell.swift */; };
+		9D8B12871E848F2300835877 /* TransitVehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8B12861E848F2300835877 /* TransitVehicle.swift */; };
+		9D8B12891E848F4500835877 /* TransitBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8B12881E848F4500835877 /* TransitBus.swift */; };
 		B9FB91282A7CF8614F519844 /* Pods_TranslinkGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TranslinkGo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D05753B1E84A70400152D1B /* advanced_led_board-7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "advanced_led_board-7.ttf"; sourceTree = "<group>"; };
 		9D3750CC1E7C5BDC007F80B2 /* TranslinkGo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TranslinkGo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D3750CF1E7C5BDC007F80B2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D3750D41E7C5BDC007F80B2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,6 +50,8 @@
 		9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopLocAnnotation.swift; sourceTree = "<group>"; };
 		9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitSchedule.swift; sourceTree = "<group>"; };
 		9D38574C1E819B1D000C4C6A /* TransitEstimateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitEstimateCell.swift; sourceTree = "<group>"; };
+		9D8B12861E848F2300835877 /* TransitVehicle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitVehicle.swift; sourceTree = "<group>"; };
+		9D8B12881E848F4500835877 /* TransitBus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitBus.swift; sourceTree = "<group>"; };
 		AE22F9FC5321DC0510DF5153 /* Pods-TranslinkGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslinkGo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo.debug.xcconfig"; sourceTree = "<group>"; };
 		D29186E72FFE92D9E61EE27F /* Pods-TranslinkGo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslinkGo.release.xcconfig"; path = "Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -69,6 +75,14 @@
 				D29186E72FFE92D9E61EE27F /* Pods-TranslinkGo.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		9D05753A1E84A6EE00152D1B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9D05753B1E84A70400152D1B /* advanced_led_board-7.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		9D3750C31E7C5BDC007F80B2 = {
@@ -102,6 +116,7 @@
 				9D3750D61E7C5BDC007F80B2 /* Assets.xcassets */,
 				9D3750D81E7C5BDC007F80B2 /* LaunchScreen.storyboard */,
 				9D3750DB1E7C5BDC007F80B2 /* Info.plist */,
+				9D05753A1E84A6EE00152D1B /* Resources */,
 			);
 			path = TranslinkGo;
 			sourceTree = "<group>";
@@ -123,8 +138,10 @@
 			children = (
 				9D38573E1E8041C7000C4C6A /* TransitLine.swift */,
 				9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */,
-				9D3857441E8065A2000C4C6A /* BusStop.swift */,
 				9D3857461E8065C2000C4C6A /* TransitStop.swift */,
+				9D3857441E8065A2000C4C6A /* BusStop.swift */,
+				9D8B12861E848F2300835877 /* TransitVehicle.swift */,
+				9D8B12881E848F4500835877 /* TransitBus.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -201,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D3750DA1E7C5BDC007F80B2 /* LaunchScreen.storyboard in Resources */,
+				9D05753C1E84A70400152D1B /* advanced_led_board-7.ttf in Resources */,
 				9D3750D71E7C5BDC007F80B2 /* Assets.xcassets in Resources */,
 				9D3750D51E7C5BDC007F80B2 /* Main.storyboard in Resources */,
 			);
@@ -261,12 +279,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9D8B12871E848F2300835877 /* TransitVehicle.swift in Sources */,
 				9D3857431E805998000C4C6A /* APIManager.swift in Sources */,
 				9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */,
 				9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */,
 				9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */,
 				9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */,
 				9D38574D1E819B1D000C4C6A /* TransitEstimateCell.swift in Sources */,
+				9D8B12891E848F4500835877 /* TransitBus.swift in Sources */,
 				9D38573F1E8041C7000C4C6A /* TransitLine.swift in Sources */,
 				9D38574B1E80AC82000C4C6A /* TransitSchedule.swift in Sources */,
 				9D3857411E805941000C4C6A /* Constants.swift in Sources */,

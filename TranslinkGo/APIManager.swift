@@ -15,6 +15,7 @@ class APIManager {
     
     private static let retryCount = 0
     private static let stopInfoEndPoint = "http://api.translink.ca/rttiapi/v1/stops"
+    private static let busInfoEndPoint = "http://api.translink.ca/rttiapi/v1/buses"
     private static let nextBusEstiamteEndPoint = stopInfoEndPoint
     
 //    http://api.translink.ca/rttiapi/v1/stops/60980/estimates?apikey=S6G4dnALExHaUQfgPIvG&count=3&timeframe=120
@@ -30,6 +31,13 @@ class APIManager {
     
     func queryNextBusEstimate(stopNumber: Int, numOfServices: Int, minuteMeters: Int, completion: @escaping (Any?, Error?) -> Void) {
         let urlStr = "\(APIManager.stopInfoEndPoint)/\(stopNumber)/estimates?apiKey=\(kTranslink_API_KEY)&count=\(numOfServices)&timeframe=\(minuteMeters)"
+        let escapedUrl = urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+        
+        requestBy(escapedUrl: escapedUrl, defaultUrl: urlStr, method:.get, retryCount: APIManager.retryCount, completion: completion)
+    }
+    
+    func queryBusInfo(stopNumber: String, routeNumber: String, completion: @escaping (Any?, Error?) -> Void) {
+        let urlStr = "\(APIManager.busInfoEndPoint)?apiKey=\(kTranslink_API_KEY)&stopNo=\(stopNumber)&routeNo=\(routeNumber)"
         let escapedUrl = urlStr.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
         
         requestBy(escapedUrl: escapedUrl, defaultUrl: urlStr, method:.get, retryCount: APIManager.retryCount, completion: completion)

@@ -16,6 +16,8 @@ class TransitEstimateCell: UITableViewCell {
     @IBOutlet weak var transitLocationLabel: UILabel!
     @IBOutlet weak var recentScheduleLabel: UILabel!
     @IBOutlet weak var recentScheduleUnitLabel: UILabel!
+    @IBOutlet weak var departingStatusLabel: UILabel!
+    
     
     @IBOutlet weak var bottomView: UIView!
     @IBOutlet weak var bottomViewHeightConstraint: NSLayoutConstraint!

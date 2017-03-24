@@ -24,14 +24,36 @@ class MapViewController: UIViewController {
     @IBOutlet weak var transitStopTableView: CoverMapTableView!
     @IBOutlet weak var transitEstimateTableView: CoverMapTableView!
     
+    @IBOutlet weak var backBtn: UIButton!
+    
+    @IBAction func backBtnTapped(_ sender: Any) {
+        backBtn.isHidden = true
+        // switch states
+        self.mapViewState = .atStopList
+        
+        // bring up stops tableview
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+            self.transitEstimateTableView.transform = CGAffineTransform(translationX: 0, y: self.mapView.frame.height + self.transitEstimateTableView.contentOffset.y)
+            self.transitStopTableView.transform = CGAffineTransform.identity
+        }, completion: { (success) in
+            self.transitEstimateTableView.isHidden = true
+            self.transitStopTableView.setContentOffset(CGPoint(x:0, y: self.lastStopTableContentOffsetY)  , animated: true)
+        })
+        
+        getNearByStopInfo()
+    }
+    
     lazy var locationManager = CLLocationManager()
     var isMapLocCentered: Bool = false
-    var lastContentOffsetY: CGFloat = 0;
+    var lastLineTableContentOffsetY: CGFloat = 0;
+    var lastStopTableContentOffsetY: CGFloat = 0
     var currLoc: CLLocation?
     var pinnedLoc: CLLocation?
     
     var stopsList: [TransitStop]?
     var transitLineList: [TransitLine]?
+    var transitVehicleList: [TransitVehicle]?
     var mapViewState: MapViewState = .atStopList
     
     let lat = 49.279667
@@ -39,6 +61,7 @@ class MapViewController: UIViewController {
     
     var expandedTransitStopRows = Set<Int>()
     var expandedTransitLineRows = Set<Int>()
+    var expandedTransitLineRowsContentOffsetY: Float = 0
     
     var transitLineRefreshTimer: Timer = Timer()
     
@@ -64,6 +87,13 @@ class MapViewController: UIViewController {
 //        transitLineRefreshTimer = Timer(fireAt: Date() , interval: 10, target: self, selector: #selector(refreshTransiLineStatus), userInfo: nil, repeats: true)
         
         transitLineRefreshTimer = Timer.scheduledTimer(timeInterval: 15, target: self, selector: #selector(refreshTransiLineStatus), userInfo: nil, repeats: true)
+        
+//        let userLocationBtn = MKUserTrackingBarButtonItem(mapView: self.mapView)
+//        self.navigationItem.rightBarButtonItem = userLocationBtn
+        
+        let button = UIButton()
+        button.setTitle("Back", for: UIControlState.normal)
+        self.mapView.addSubview(button)
     }
     
     override func viewDidLayoutSubviews() {
@@ -87,15 +117,22 @@ class MapViewController: UIViewController {
     
     func refreshTransiLineStatus() {
         guard let index = self.expandedTransitStopRows.first else {return}
-        let busStop = self.stopsList?[index] as! BusStop
-        getNextbusInfo(stopNo: busStop.stopNo)
+        if mapViewState == .atTransitLineList {
+            guard let busStop = self.stopsList?[index] as? BusStop else { return }
+            getNextbusInfo(stopNo: busStop.stopNo)
+        }
     }
     
     // MARK: API Calls
     func getNearByStopInfo() {
         if let pinnedLoc = self.pinnedLoc {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
+            
+            // works for simulator
             APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 300, completion: { (response, error) in
+            
+            // works for device
+            //APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.latitude)!))", longitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.longitude)!))", radius: 300, completion: { (response, error) in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 if let err = error {
                     print("Error: \(err)")
@@ -143,6 +180,10 @@ class MapViewController: UIViewController {
                     return
                 }
                 
+                // TODO check state,
+                if self.mapViewState == .atTransitLineList {
+                }
+                
                 for transitLineItem in routesArr {
                     let transitLine = TransitLine(routeNo: transitLineItem["RouteNo"].stringValue, routeName: transitLineItem["RouteName"].stringValue, direction: transitLineItem["Direction"].stringValue)
                     
@@ -158,29 +199,66 @@ class MapViewController: UIViewController {
                     }
                     
                     self.transitLineList?.append(transitLine)
-                    self.transitEstimateTableView.reloadData()
-                    if let lastVisibleIndexPath = self.transitEstimateTableView.indexPathsForVisibleRows?[(self.transitEstimateTableView.indexPathsForVisibleRows?.count)! - 1] {
-                        self.transitEstimateTableView.scrollToRow(at: lastVisibleIndexPath, at: UITableViewScrollPosition.top, animated: true)
-                    }
+                }
+                
+                // sort the list
+                
+                let sortedList = self.transitLineList?.sorted(by: { ($0.schedules?[0].expCountDown)! < ($1.schedules?[0].expCountDown)! })
+                self.transitLineList = sortedList
+                
+                self.expandedTransitLineRowsContentOffsetY = Float(self.transitEstimateTableView.contentOffset.y)
+                self.transitEstimateTableView.reloadData()
+                self.transitEstimateTableView.setContentOffset(CGPoint(x:0, y: Int(self.expandedTransitLineRowsContentOffsetY)), animated: false)
+                
+                if self.mapViewState == .atStopList {
+                    self.backBtn.isHidden = false
                     
+                    // switch states
+                    self.mapViewState = .atTransitLineList
                     
-                    if self.mapViewState == .atStopList {
-                        // switch states
-                        self.mapViewState = .atTransitLineList
-                        
-                        // bring up tableview
-                        
-                        self.transitEstimateTableView.isHidden = false
-                        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
-                            self.transitEstimateTableView.transform = CGAffineTransform.identity
-                            self.transitStopTableView.transform = CGAffineTransform(translationX: 0, y: self.mapView.frame.height + self.transitStopTableView.contentOffset.y)
-                        }, completion: nil)
-                    }
+                    // bring up tableview
                     
+                    self.transitEstimateTableView.isHidden = false
+                    UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseInOut, animations: {
+                        self.transitEstimateTableView.transform = CGAffineTransform.identity
+                        self.transitStopTableView.transform = CGAffineTransform(translationX: 0, y: self.mapView.frame.height + self.transitStopTableView.contentOffset.y)
+                    }, completion: nil)
                 }
                 
             }
         })
+    }
+    
+    func getBusInfo(stopNo: String?, routeNo: String?) {
+        guard let stopNo = stopNo, let routeNo = routeNo else { return }
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        APIManager.sharedInstance.queryBusInfo(stopNumber: stopNo, routeNumber: routeNo) { (response, error) in
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            if let err = error {
+                print("Error: \(err)")
+            } else if let responseData = response {
+                self.transitVehicleList = [TransitVehicle]()
+                let jsonResponse = JSON(responseData)
+                
+                guard let transitVehicleArr = jsonResponse.array else {
+                    return
+                }
+                
+                for transitVehicle in transitVehicleArr {
+                    let transitBus = TransitBus(vehicleNo: transitVehicle["VehicleNo"].stringValue, tripId: transitVehicle["TripId"].stringValue, routeNo: transitVehicle["RouteNo"].stringValue)
+                    transitBus.destination = transitVehicle["Destination"].stringValue
+                    transitBus.direction = transitVehicle["Direction"].stringValue
+                    transitBus.pattern = transitVehicle["Pattern"].stringValue
+                    transitBus.latitude = transitVehicle["Latitude"].doubleValue
+                    transitBus.longitude = transitVehicle["Longitude"].doubleValue
+                    
+                    self.transitVehicleList?.append(transitBus)
+                }
+                
+                self.addAnnotationsforVehicles()
+            }
+        }
+        
     }
     
     func requestLocation() {
@@ -221,6 +299,8 @@ class MapViewController: UIViewController {
         let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
         mapView.region = MKCoordinateRegion(center: center, span: span)
         isMapLocCentered = true
+        
+        //self.mapView.userTrackingMode = .followWithHeading
     }
     
     func clearAllMapAnnotations() {
@@ -237,13 +317,38 @@ class MapViewController: UIViewController {
             annotation.coordinate = CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude)
             annotation.title = "\(busStop.stopNo)"
             annotation.subtitle = busStop.name
-            
+    
+            // turned off custom annotation
 //            let annotation = BusStopLocAnnotation(title: "\(busStop.stopNo)", coordinate: CLLocationCoordinate2D(latitude: busStop.latitude , longitude: busStop.longitude), info: busStop.name)
             self.mapView.addAnnotation(annotation)
         }
     }
+    
+    func addAnnotationsforVehicles() {
+        guard let transitVehicleList = self.transitVehicleList else {return}
+        clearAllMapAnnotations()
+        
+        for transitVehicle in transitVehicleList  {
+            let bus = transitVehicle as! TransitBus
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(latitude: bus.latitude! , longitude: bus.longitude!)
+            annotation.title = "\(bus.routeNo)"
+            annotation.subtitle = bus.destination
+            self.mapView.addAnnotation(annotation)
+        }
+        
+        
+    }
+    
+    
+    // MARK: Utils
+    
+    func trimDecimal(num: CLLocationDegrees) -> Double {
+        return Double(round(Double(num) * 1000000)/1000000)
+    }
 }
 
+// MARK: UITableView Delegates
 extension MapViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -267,10 +372,13 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             let busStop = self.stopsList?[indexPath.row] as! BusStop
             
             cell?.stopNoLabel.text = "\(busStop.stopNo)"
-            cell?.stopLocLabel.text = "\(busStop.onStreet!.capitalized)/\(busStop.atStreet!.capitalized)"
-            cell?.transitLineLabel.text = busStop.routes! == "" ? "Routes info not available" : busStop.routes!.capitalized
+            cell?.stopLocLabel.text = "\(busStop.onStreet!)/\(busStop.atStreet!)"
+            cell?.transitLineLabel.text = busStop.routes! == "" ? "Routes info not available" : busStop.routes!
             cell?.distanceLabel.text = "\(busStop.distance!)m"
             cell?.wheelChairImageLabel.isHidden = busStop.wheelchairAccess! == 0
+            // rounded corner for wheelchair
+            cell?.wheelChairImageLabel.layer.cornerRadius = (cell?.wheelChairImageLabel.bounds.width)! / 2
+            cell?.wheelChairImageLabel.clipsToBounds = true
             cell?.isExpanded = self.expandedTransitStopRows.contains(indexPath.row)
             
             cell?.transitDetailBtn.tag = indexPath.row
@@ -282,19 +390,39 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
             let cell = tableView.dequeueReusableCell(withIdentifier: "transitEstimateCell", for: indexPath) as? TransitEstimateCell
             
             let transitLine = self.transitLineList?[indexPath.row]
-
-            cell?.transitLineNoLabel.text = transitLine?.routeNo
+            
+            if let routeNo = transitLine?.routeNo {
+                cell?.transitLineNoLabel.text = Int(routeNo) != nil ? ("\(Int(routeNo)!)") : (routeNo)
+            } else {
+                cell?.transitLineNoLabel.text = "N/A"
+            }
+            
             
             if let schedules = transitLine?.schedules {
-                cell?.transitDestinationLabel.text = schedules[0].destination.capitalized
-                cell?.recentScheduleLabel.text = "\(schedules[0].expCountDown!)"
+                cell?.transitDestinationLabel.text = schedules[0].destination
+                if let expCountDown = schedules[0].expCountDown {
+                    
+                    cell?.recentScheduleLabel.isHidden = expCountDown <= 0
+                    cell?.recentScheduleUnitLabel.isHidden = expCountDown <= 0
+                    cell?.departingStatusLabel.isHidden = expCountDown > 0
+                    
+                    if expCountDown > 0 {
+                        cell?.recentScheduleLabel.text = "\(expCountDown)"
+                    } else if expCountDown == 0 {
+                        cell?.departingStatusLabel.text = "Arriving Now"
+                    } else if expCountDown < 0 {
+                        cell?.departingStatusLabel.text = "Departured"
+                    }
+                }
+                
+                
             } else {
-                cell?.transitDestinationLabel.text = transitLine?.routeName.capitalized
+                cell?.transitDestinationLabel.text = transitLine?.routeName
                 cell?.recentScheduleLabel.text = "N/A"
             }
             
             if let index = self.expandedTransitStopRows.first {
-                cell?.transitLocationLabel.text = self.stopsList?[index].name.capitalized
+                cell?.transitLocationLabel.text = self.stopsList?[index].name
             } else {
                 // TODO: look for item iteratively...
                 
@@ -334,6 +462,14 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
                 break
             case false:
                 self.expandedTransitLineRows.insert(indexPath.row)
+                
+                // TODO: retrieve bus info and display onto map
+                
+                guard let index = self.expandedTransitStopRows.first else {return}
+                if let stop = self.stopsList?[index] as? BusStop {
+                    self.getBusInfo(stopNo:String(stop.stopNo), routeNo: self.transitLineList?[indexPath.row].routeNo)
+                }
+                
                 break
             }
             
@@ -380,10 +516,20 @@ extension MapViewController: UITableViewDataSource, UITableViewDelegate {
         let row = sender.tag
         if let busStop = self.stopsList?[row] as? BusStop {
             self.getNextbusInfo(stopNo: busStop.stopNo)
+            self.lastStopTableContentOffsetY = self.transitStopTableView.contentOffset.y
+            
+            //if let cell = self.transitStopTableView.cellForRow(at: IndexPath(row: row, section: 0)) as? TranslinkLineCell {
+            //   cell.isExpanded = !cell.isExpanded
+                
+            //    self.transitStopTableView.beginUpdates()
+            //    self.transitStopTableView.endUpdates()
+            //}
         }
     }
 }
 
+
+// MARK: MKMapView Delegates
 extension MapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -418,6 +564,7 @@ extension MapViewController: MKMapViewDelegate {
     }
 }
 
+// MARK: CLLocationManager Delegates
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         print("Location is updated.")
@@ -439,6 +586,7 @@ extension MapViewController: CLLocationManagerDelegate {
     }
 }
 
+// MARK: UISearchBar Delegates
 extension MapViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         print("Searching \(searchBar.text!)...")
@@ -447,11 +595,22 @@ extension MapViewController: UISearchBarDelegate {
         updateLocation()
 
     }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.searchBar.resignFirstResponder()
+    }
 }
 
+
+// MARK: ScrollView Delegates
 extension MapViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         print("scrollView.contentOffset.y is \(scrollView.contentOffset.y)")
+        if scrollView == self.transitStopTableView {
+            lastStopTableContentOffsetY = scrollView.contentOffset.y
+        } else {
+            lastLineTableContentOffsetY = scrollView.contentOffset.y
+        }
         
         // check if tableview covers the whole screen
         if self.transitStopTableView.contentInset.top > 0 {
@@ -467,11 +626,11 @@ extension MapViewController: UIScrollViewDelegate {
                 // moves tableView up
                 print("will move tableView UP... \(scrollView.contentOffset.y)")
 
-                let diffY = scrollView.contentOffset.y - lastContentOffsetY
+                let diffY = scrollView.contentOffset.y - lastLineTableContentOffsetY
                 let tableViewFrame = self.transitStopTableView.frame
                 //self.tableView.frame = CGRect(x: tableViewFrame.origin.x, y: tableViewFrame.origin.y - diffY, width: tableViewFrame.width, height: tableViewFrame.height + diffY)
                 
-                lastContentOffsetY = scrollView.contentOffset.y
+                lastLineTableContentOffsetY = scrollView.contentOffset.y
                 
                 // also need to scroll down the content inside to prevent "double scrolling" effect
                 
