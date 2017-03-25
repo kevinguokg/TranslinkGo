@@ -24,6 +24,7 @@
 		9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */; };
 		9D38574B1E80AC82000C4C6A /* TransitSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */; };
 		9D38574D1E819B1D000C4C6A /* TransitEstimateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D38574C1E819B1D000C4C6A /* TransitEstimateCell.swift */; };
+		9D44EAE41E85A33B00DCDB16 /* MapCenterOverlayButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D44EAE31E85A33B00DCDB16 /* MapCenterOverlayButton.swift */; };
 		9D8B12871E848F2300835877 /* TransitVehicle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8B12861E848F2300835877 /* TransitVehicle.swift */; };
 		9D8B12891E848F4500835877 /* TransitBus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8B12881E848F4500835877 /* TransitBus.swift */; };
 		B9FB91282A7CF8614F519844 /* Pods_TranslinkGo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 70070EB5B2F85E9C6445C40E /* Pods_TranslinkGo.framework */; };
@@ -50,6 +51,7 @@
 		9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusStopLocAnnotation.swift; sourceTree = "<group>"; };
 		9D38574A1E80AC82000C4C6A /* TransitSchedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitSchedule.swift; sourceTree = "<group>"; };
 		9D38574C1E819B1D000C4C6A /* TransitEstimateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitEstimateCell.swift; sourceTree = "<group>"; };
+		9D44EAE31E85A33B00DCDB16 /* MapCenterOverlayButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapCenterOverlayButton.swift; sourceTree = "<group>"; };
 		9D8B12861E848F2300835877 /* TransitVehicle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitVehicle.swift; sourceTree = "<group>"; };
 		9D8B12881E848F4500835877 /* TransitBus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitBus.swift; sourceTree = "<group>"; };
 		AE22F9FC5321DC0510DF5153 /* Pods-TranslinkGo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TranslinkGo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TranslinkGo/Pods-TranslinkGo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				9D3750EC1E7C64DC007F80B2 /* TranslinkLineCell.swift */,
 				9D38574C1E819B1D000C4C6A /* TransitEstimateCell.swift */,
 				9D3857481E809364000C4C6A /* BusStopLocAnnotation.swift */,
+				9D44EAE31E85A33B00DCDB16 /* MapCenterOverlayButton.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -283,6 +286,7 @@
 				9D3857431E805998000C4C6A /* APIManager.swift in Sources */,
 				9D3750D01E7C5BDC007F80B2 /* AppDelegate.swift in Sources */,
 				9D3750E71E7C5FBF007F80B2 /* CoverMapTableView.swift in Sources */,
+				9D44EAE41E85A33B00DCDB16 /* MapCenterOverlayButton.swift in Sources */,
 				9D3750E91E7C600C007F80B2 /* AddressSearchBar.swift in Sources */,
 				9D3857491E809364000C4C6A /* BusStopLocAnnotation.swift in Sources */,
 				9D38574D1E819B1D000C4C6A /* TransitEstimateCell.swift in Sources */,

@@ -50,6 +50,7 @@ class MapViewController: UIViewController {
     var lastStopTableContentOffsetY: CGFloat = 0
     var currLoc: CLLocation?
     var pinnedLoc: CLLocation?
+    var centerBtn:MapCenterOverlayButton?
     
     var stopsList: [TransitStop]?
     var transitLineList: [TransitLine]?
@@ -94,6 +95,8 @@ class MapViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Back", for: UIControlState.normal)
         self.mapView.addSubview(button)
+        
+//        addCenterBtnToMap()
     }
     
     override func viewDidLayoutSubviews() {
@@ -129,10 +132,10 @@ class MapViewController: UIViewController {
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             
             // works for simulator
-            APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 300, completion: { (response, error) in
+            //APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(lat)", longitude: "\(long)", radius: 300, completion: { (response, error) in
             
             // works for device
-            //APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.latitude)!))", longitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.longitude)!))", radius: 300, completion: { (response, error) in
+            APIManager.sharedInstance.queryStopsNearLocation(latitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.latitude)!))", longitude: "\(trimDecimal(num: (self.pinnedLoc?.coordinate.longitude)!))", radius: 300, completion: { (response, error) in
                 UIApplication.shared.isNetworkActivityIndicatorVisible = false
                 if let err = error {
                     print("Error: \(err)")
@@ -296,7 +299,7 @@ class MapViewController: UIViewController {
             center = CLLocationCoordinate2D(latitude: lat, longitude: long)
         #endif
         
-        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
         mapView.region = MKCoordinateRegion(center: center, span: span)
         isMapLocCentered = true
         
@@ -550,6 +553,38 @@ extension MapViewController: MKMapViewDelegate {
         
     }
     
+    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
+        self.centerBtn?.isHidden = false
+        self.centerBtn?.alpha = 0.75
+    }
+    
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        print("mapView center is at: (lat: \(mapView.centerCoordinate.latitude), long: \(mapView.centerCoordinate.longitude))")
+        
+        if self.currLoc != nil {
+            // location should be available at this point
+            self.pinnedLoc = CLLocation(latitude: mapView.centerCoordinate.latitude, longitude: mapView.centerCoordinate.longitude)
+            getNearByStopInfo()
+            self.centerBtn?.alpha = 1
+            UIView.animate(withDuration: 0.1, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveLinear, animations: {
+                self.centerBtn?.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+            }, completion: { (completed) in
+                UIView.animate(withDuration: 0.1, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveLinear, animations: { 
+                    self.centerBtn?.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
+                }, completion: { (completed) in
+                    UIView.animate(withDuration: 0.15, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 1.0, options: UIViewAnimationOptions.curveEaseOut, animations: { 
+                        self.centerBtn?.transform = CGAffineTransform.identity
+                    }, completion: nil)
+                })
+            })
+        }
+    }
+    
+    func mapViewDidFinishLoadingMap(_ mapView: MKMapView) {
+        print("mapViewDidFinishLoadingMap")
+        addCenterBtnToMap()
+    }
+    
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         print("calloutAccessoryControlTapped")
         
@@ -562,6 +597,16 @@ extension MapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
         print("didSelect MKAnnotationView")
     }
+    
+    func addCenterBtnToMap() {
+        let btnWidth:CGFloat = 24.0
+        
+        self.centerBtn = MapCenterOverlayButton(frame: CGRect(x: self.mapView.center.x - btnWidth / 2, y: self.mapView.center.y - btnWidth / 2, width: btnWidth, height: btnWidth))
+        self.centerBtn?.isHidden = false
+        self.centerBtn?.setTitle("afe", for: UIControlState.normal)
+        self.mapView.addSubview(self.centerBtn!)
+        self.mapView.bringSubview(toFront: self.centerBtn!)
+    }
 }
 
 // MARK: CLLocationManager Delegates
@@ -572,10 +617,10 @@ extension MapViewController: CLLocationManagerDelegate {
         // gets the latest loc
         if let newLoc = locations.last {
             self.currLoc = newLoc
-            self.pinnedLoc = newLoc
+//            self.pinnedLoc = newLoc
             
             updateMapCenter(loc: newLoc)
-            getNearByStopInfo()
+//            getNearByStopInfo()
         }
         
         stopUpdatingLocation()
